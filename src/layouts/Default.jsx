@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import { webpackHost, webpackPort } from '../../config/env';
+
 export default class Default extends React.Component {
   render() {
     const { component, store } = this.props;
