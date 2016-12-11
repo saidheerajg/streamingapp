@@ -1,11 +1,17 @@
 /* eslint import/no-extraneous-dependencies: 0 */
+
 const path = require('path');
 const webpack = require('webpack');
+
 const assetsPath = path.resolve(__dirname, '../public/assets');
+
 const webpackIsomorphicToolsConfig = require('./webpack-isomorphic-tools');
 const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicToolsConfig);
+
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -28,7 +34,8 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
-      },{
+      },
+      {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(
                   'style',
@@ -73,24 +80,28 @@ module.exports = {
     extensions: ['', '.json', '.js', '.jsx'],
   },
   plugins: [
+    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }),
+
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"',
       },
+
       __CLIENT__: true,
       __DEVTOOLS__: false,
     }),
+
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+
     // optimizations
-    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }),
     new webpack.optimize.DedupePlugin(),
-    webpackIsomorphicToolsPlugin,
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
       },
     }),
+    webpackIsomorphicToolsPlugin,
   ],
 };

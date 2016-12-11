@@ -1,10 +1,17 @@
+/* eslint import/no-extraneous-dependencies: 0 */
+
 const path = require('path');
 const webpack = require('webpack');
+
 const assetsPath = path.resolve(__dirname, '../public/assets');
+
 const { webpackHost, webpackPort } = require('../config/env');
+
 const webpackIsomorphicToolsConfig = require('./webpack-isomorphic-tools');
 const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicToolsConfig);
+
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -73,7 +80,6 @@ module.exports = {
   plugins: [
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
-    webpackIsomorphicToolsPlugin.development(),
     new webpack.IgnorePlugin(/webpack-stats\.json$/),
     new webpack.DefinePlugin({
       __CLIENT__: true,
@@ -82,5 +88,6 @@ module.exports = {
         NODE_ENV: '"development"',
       },
     }),
+    webpackIsomorphicToolsPlugin.development(),
   ],
 };
